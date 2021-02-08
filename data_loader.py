@@ -185,7 +185,7 @@ class DataEngine:
 				self.features_dictionary_for_all_symbols[symbol] = {"features": features_dictionary, "current_prices": stock_price_data, "future_prices": future_prices}
 
 				# Save dictionary after every 100 symbols
-				if len(self.features_dictionary_for_all_symbols) % 100 == 0 and self.IS_SAVE_DICT == 1:
+				if len(self.features_dictionary_for_all_symbols) % 25== 0 and self.IS_SAVE_DICT == 1:
 					np.save(self.DICT_PATH, self.features_dictionary_for_all_symbols)
 
 				if np.isnan(feature_list).any() == True:
@@ -210,6 +210,7 @@ class DataEngine:
 	def load_data_from_dictionary(self):
 		# Load data from dictionary
 		print("Loading data from dictionary")
+		# self.DICT_PATH = self.DICT_PATH[1:len(self.DICT_PATH)-1]
 		dictionary_data = np.load(self.DICT_PATH, allow_pickle = True).item()
 		
 		features = []
