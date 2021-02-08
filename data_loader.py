@@ -169,43 +169,38 @@ class DataEngine:
 		 # Any stock with very low volatility is ignored. You can change this line to address that.
 		for i in tqdm(range(len(self.stocks_list))):
 			symbol = self.stocks_list[i]
-			try:
-				stock_price_data, future_prices, not_found = self.get_data(symbol)
-					
-				if not not_found:
-					volatility = self.calculate_volatility(stock_price_data)
+			stock_price_data, future_prices, not_found = self.get_data(symbol)
 
-					# Filter low volatility stocks
-					if volatility < self.VOLATILITY_THRESHOLD:
-						continue
-						
-					features_dictionary = self.taEngine.get_technical_indicators(stock_price_data)
-					feature_list = self.taEngine.get_features(features_dictionary)
+			if not not_found:
+				volatility = self.calculate_volatility(stock_price_data)
 
-					# Add to dictionary
-					self.features_dictionary_for_all_symbols[symbol] = {"features": features_dictionary, "current_prices": stock_price_data, "future_prices": future_prices}
+				# Filter low volatility stocks
+				if volatility < self.VOLATILITY_THRESHOLD:
+					continue
 
-					# Save dictionary after every 100 symbols
-					if len(self.features_dictionary_for_all_symbols) % 100 == 0 and self.IS_SAVE_DICT == 1:
-						np.save(self.DICT_PATH, self.features_dictionary_for_all_symbols)
+				features_dictionary = self.taEngine.get_technical_indicators(stock_price_data)
+				feature_list = self.taEngine.get_features(features_dictionary)
 
-					if np.isnan(feature_list).any() == True:
-						continue
+				# Add to dictionary
+				self.features_dictionary_for_all_symbols[symbol] = {"features": features_dictionary, "current_prices": stock_price_data, "future_prices": future_prices}
 
-					# Check for volume
-					average_volume_last_30_tickers = np.mean(list(stock_price_data["Volume"])[-30:])
-					if average_volume_last_30_tickers < self.VOLUME_FILTER:
-						continue
+				# Save dictionary after every 100 symbols
+				if len(self.features_dictionary_for_all_symbols) % 100 == 0 and self.IS_SAVE_DICT == 1:
+					np.save(self.DICT_PATH, self.features_dictionary_for_all_symbols)
 
-					# Add to lists
-					features.append(feature_list)
-					symbol_names.append(symbol)
-					historical_price_info.append(stock_price_data)
-					future_price_info.append(future_prices)
+				if np.isnan(feature_list).any() == True:
+					continue
 
-			except Exception as e:
-				print("Exception", e)
-				continue
+				# Check for volume
+				average_volume_last_30_tickers = np.mean(list(stock_price_data["Volume"])[-30:])
+				if average_volume_last_30_tickers < self.VOLUME_FILTER:
+					continue
+
+				# Add to lists
+				features.append(feature_list)
+				symbol_names.append(symbol)
+				historical_price_info.append(stock_price_data)
+				future_price_info.append(future_prices)
 
 		# Sometimes, there are some errors in feature generation or price extraction, let us remove that stuff
 		features, historical_price_info, future_price_info, symbol_names = self.remove_bad_data(features, historical_price_info, future_price_info, symbol_names)
