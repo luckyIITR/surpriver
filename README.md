@@ -47,7 +47,7 @@ If you want to go ahead and directly get the most anomalous stocks for today, yo
 #### Get Most Anomalous Stocks for Today
 ##### When you do not have the data dictionary saved and you are running it for the first time.
 ```
-python detection_engine.py --top_n 25 --min_volume 5000 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 0 --data_dictionary_path 'dictionaries/data_dict.npy' --is_save_dictionary 1 --is_test 0 --future_bars 0
+python detection_engine.py --top_n 25 --min_volume 5000 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 0 --data_dictionary_path dictionaries/data_dict.npy --is_save_dictionary 1 --is_test 0 --future_bars 0
 ```
 This command will give you the top **25 stocks** that had the highest anomaly score in the last **14 bars** of **60 minute candles**. It will also store all the data that it used to make predictions in the **dictionaries/data_dict.npy** folder. Below is a more detailed explanation of each parameter.
 - **top_n**: The total number of most anomalous stocks you want to see.
@@ -63,7 +63,7 @@ This command will give you the top **25 stocks** that had the highest anomaly sc
 
 #####  When you have the data dictionary saved, you can just run the following command.
 ```
-python detection_engine.py --top_n 25 --min_volume 5000 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 1 --data_dictionary_path 'dictionaries/data_dict.npy' --is_save_dictionary 0 --is_test 0 --future_bars 0 --output_format 'CLI'
+python detection_engine.py --top_n 25 --min_volume 5000 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 1 --data_dictionary_path dictionaries/data_dict.npy --is_save_dictionary 0 --is_test 0 --future_bars 0 --output_format CLI
 ```
 Notice the change in **is_save_dictionary** and **is_load_from_dictionary**.
 
@@ -86,12 +86,12 @@ If you are suspicious of the use of Machine Learning and Artificial Intelligence
 
 #### Find Anomalous Stocks and Test them on Historical Data
 ```
-python detection_engine.py --top_n 25 --min_volume 5000 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 0 --data_dictionary_path 'dictionaries/data_dict.npy' --is_save_dictionary 1 --is_test 1 --future_bars 25
+python detection_engine.py --top_n 25 --min_volume 5000 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 0 --data_dictionary_path dictionaries/data_dict.npy --is_save_dictionary 1 --is_test 1 --future_bars 25
 ```
 
 If you have already generated the data dictionary, you can use the following command where we set **is_load_from_dictionary** to 1 and **is_save_dictionary** to 0.
 ```
-python detection_engine.py --top_n 25 --min_volume 5000 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 1 --data_dictionary_path 'dictionaries/data_dict.npy' --is_save_dictionary 0 --is_test 1 --future_bars 25
+python detection_engine.py --top_n 25 --min_volume 5000 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 1 --data_dictionary_path dictionaries/data_dict.npy --is_save_dictionary 0 --is_test 1 --future_bars 25
 ```
 
 <p align="center">
@@ -115,7 +115,7 @@ You can see that historical volatility for normal vs anomalous stocks is not tha
 ### Support for Crypto Currencies
 You can now specify which data source you wold like to use along with which stocks list you would like to use.
 ```
-python detection_engine.py --top_n 25 --min_volume 500 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 0 --data_dictionary_path 'dictionaries/feature_dict.npy' --is_save_dictionary 1 --is_test 0 --future_bars 0  --data_source binance --stock_list cryptos.txt
+python detection_engine.py --top_n 25 --min_volume 500 --data_granularity_minutes 60 --history_to_use 14 --is_load_from_dictionary 0 --data_dictionary_path dictionaries/feature_dict.npy --is_save_dictionary 1 --is_test 0 --future_bars 0  --data_source binance --stock_list cryptos.txt
 ```
 - **data_source**: Specifies where to get data from, current supported options are binance and yahoo_finance(default)
 - **stocks_list**: Which file in the stocks directory contains the list of tickers to analyze. Default is stocks.txt.
